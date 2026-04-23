@@ -759,7 +759,7 @@ export class TableDialog {
                         table.allowHtmlInColumns && table.allowHtmlInColumns.includes(cellIndex);
                       const cellContent = allowHtml ? cell : this.escapeHtml(cell);
                       const cellTitle = this.escapeHtml(
-                        allowHtml ? cell.replace(/<[^>]*>/g, '') : cell
+                        allowHtml ? this.stripHtmlTagsForTitle(cell) : cell
                       ); // Strip HTML for title
                       return `<td class="${cellClass}" title="${cellTitle}">${cellContent}</td>`;
                     })
