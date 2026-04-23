@@ -669,6 +669,16 @@ export class TableDialog {
     this.styleInjected = true;
   }
 
+  private static stripHtmlTagsForTitle(input: string): string {
+    let previous: string;
+    let sanitized = input;
+    do {
+      previous = sanitized;
+      sanitized = sanitized.replace(/<[^>]*>/g, '');
+    } while (sanitized !== previous);
+    return sanitized;
+  }
+
   private static createTableHTML(table: TableData, index: number): string {
     const tableId = `levelup-table-${index}`;
     const hasDescription = table.description
@@ -691,7 +701,7 @@ export class TableDialog {
                         table.allowHtmlInColumns && table.allowHtmlInColumns.includes(cellIndex);
                       const cellContent = allowHtml ? cell : this.escapeHtml(cell);
                       const cellTitle = this.escapeHtml(
-                        allowHtml ? cell.replace(/<[^>]*>/g, '') : cell
+                        allowHtml ? this.stripHtmlTagsForTitle(cell) : cell
                       ); // Strip HTML for title
                       return `<td class="${cellClass}" title="${cellTitle}">${cellContent}</td>`;
                     })
